@@ -32,6 +32,6 @@ AGENTS = {
     },
 }
 
-RUNS_PER_DAY = 24             # används bara för att beräkna "förväntad livslängd"
+RUNS_PER_DAY = 12             # används bara för att beräkna "förväntad livslängd"
 OHLCV_TIMEFRAME = "1h"
 OHLCV_BARS = 48

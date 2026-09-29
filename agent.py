@@ -21,6 +21,7 @@ LOG_DIR = "logs"
 DECIDE_TOOL = {
     "name": "decide",
     "description": "Your single trading decision for this cycle.",
+    "strict": True,
     "input_schema": {
         "type": "object",
         "properties": {
@@ -31,6 +32,7 @@ DECIDE_TOOL = {
             "reasoning": {"type": "string", "description": "2-4 sentences. Be concrete."},
         },
         "required": ["action", "reasoning"],
+        "additionalProperties": False,
     },
 }
 
@@ -142,13 +144,13 @@ def ask_model(agent_cfg, user_msg):
     client = anthropic.Anthropic(api_key=os.environ["SURVIVAL_API_KEY"])
     resp = client.messages.create(
         model=agent_cfg["model"],
-        max_tokens=800,
+        max_tokens=16000,  # tänkandet är alltid på och räknas mot max_tokens
         system=SYSTEM_PROMPT,
         tools=[DECIDE_TOOL],
-        tool_choice={"type": "tool", "name": "decide"},
+        tool_choice={"type": "auto"},  # "tool"/"any" ger 400 på Opus 5.5 och Fable 5.1
         messages=[{"role": "user", "content": user_msg}],
     )
-    decision = next((b.input for b in resp.content if b.type == "tool_use"), {"action": "hold", "reasoning": "no tool call"})
+    decision = next((b.input for b in resp.content if b.type == "tool_use"), {"action": "hold", "reasoning": f"no tool call (stop_reason={resp.stop_reason})"})
     cost = (resp.usage.input_tokens * agent_cfg["price_in"] + resp.usage.output_tokens * agent_cfg["price_out"]) / 1e6
     return decision, cost, resp.usage.input_tokens, resp.usage.output_tokens
 
