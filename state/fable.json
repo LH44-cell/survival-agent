@@ -1,0 +1,17 @@
+{
+  "agent": "fable",
+  "born": "2026-09-29T08:45:22+00:00",
+  "alive": true,
+  "cash": 19.97059,
+  "positions": {},
+  "compute_spent": 0.02941,
+  "runs": 1,
+  "trades": [],
+  "history": [
+    {
+      "time": "2026-09-29T08:45:38+00:00",
+      "equity": 19.9706,
+      "cost": 0.02941
+    }
+  ]
+}
