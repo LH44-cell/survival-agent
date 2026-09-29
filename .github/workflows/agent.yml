@@ -2,7 +2,7 @@ name: survival-agents
 
 on:
   schedule:
-    - cron: "7 * * * *"      # varje timme (GitHub kan fördröja några minuter)
+    - cron: "7 */2 * * *"    # varannan timme (GitHub kan fördröja några minuter)
   workflow_dispatch:         # manuell körning från Actions-fliken
 
 permissions:
