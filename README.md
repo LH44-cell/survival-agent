@@ -1,6 +1,6 @@
 # Survival Agent – AI-agenter som måste tradea för att överleva
 
-Två Claude-modeller (Haiku 4.5 och Fable 5.1) får 20 USD var. Varje timme fattar de ett
+Två Claude-modeller (Opus 5.5 och Fable 5.1) får 20 USD var. Varje timme fattar de ett
 handelsbeslut på riktiga Kraken-priser, och kostnaden för deras eget tänkande dras från
 plånboken. Når eget kapital noll stängs de av för gott. Modellerna vet inte att det är simulerat.
 
@@ -22,11 +22,11 @@ plånboken. Når eget kapital noll stängs de av för gott. Modellerna vet inte 
 pip install -r requirements.txt
 cp .env.example .env            # lägg in SURVIVAL_API_KEY
 export $(cat .env | xargs)      # eller sätt variabeln på annat sätt
-python agent.py --agent haiku
+python agent.py --agent opus
 python agent.py --agent fable
 python status.py
 ```
-Kolla `logs/haiku.jsonl` och läs resonemangen. Kör några varv för hand innan du automatiserar.
+Kolla `logs/opus.jsonl` och läs resonemangen. Kör några varv för hand innan du automatiserar.
 
 **Viktigt:** uppdatera `price_in`/`price_out` i `config.py` för Fable 5.1 mot Anthropics prislista
 – de är platshållare. Compute-kostnaden är hela poängen med experimentet, så den måste stämma.

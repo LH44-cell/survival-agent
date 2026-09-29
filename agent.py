@@ -1,5 +1,5 @@
 """Ett varv i agentens liv. Körs t.ex. varje timme:
-    python agent.py --agent haiku
+    python agent.py --agent opus
 Läser tillstånd -> hämtar marknad -> frågar modellen -> riskfilter -> exekverar
 -> drar compute-kostnad från kassan -> sparar tillstånd + logg."""
 

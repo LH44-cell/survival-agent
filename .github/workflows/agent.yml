@@ -27,7 +27,7 @@ jobs:
           KRAKEN_API_KEY: ${{ secrets.KRAKEN_API_KEY }}
           KRAKEN_API_SECRET: ${{ secrets.KRAKEN_API_SECRET }}
         run: |
-          for a in haiku fable; do
+          for a in opus fable; do
             python agent.py --agent "$a" || echo "agent $a failed"
           done
       - name: Commit state and logs
