@@ -1,6 +1,6 @@
 # Survival Agent – AI-agenter som måste tradea för att överleva
 
-Två Claude-modeller (Opus 5.5 och Fable 5.1) får 20 USD var. Varje timme fattar de ett
+Två Claude-modeller (Opus 5.5 och Fable 5.1) får 20 USD var. Varannan timme fattar de ett
 handelsbeslut på riktiga Kraken-priser, och kostnaden för deras eget tänkande dras från
 plånboken. Når eget kapital noll stängs de av för gott. Modellerna vet inte att det är simulerat.
 
@@ -13,7 +13,7 @@ plånboken. Når eget kapital noll stängs de av för gott. Modellerna vet inte 
 | `risk.py` | Hårda regler i kod. `KILL_SWITCH`-fil i mappen stoppar all handel |
 | `status.py` | Snabb översikt över alla agenter |
 | `tax_export.py` | K4-underlag (genomsnittsmetoden, SEK via ECB) från riktiga trades |
-| `.github/workflows/agent.yml` | Kör allt varje timme på GitHub Actions |
+| `.github/workflows/agent.yml` | Kör allt varannan timme på GitHub Actions |
 | `state/` | Agenternas tillstånd (plånbok, trades, historik) – committas automatiskt |
 | `logs/` | En rad per varv med beslut, resonemang, kostnad, marknadsögonblick |
 
@@ -37,7 +37,7 @@ Kolla `logs/opus.jsonl` och läs resonemangen. Kör några varv för hand innan 
    (Kraken-nycklarna behövs först i steg 3).
 3. Settings → Actions → General → Workflow permissions → *Read and write permissions*.
 4. Actions-fliken → `survival-agents` → *Run workflow* för att testa manuellt.
-Därefter körs det varje timme. Din dator kan vara avstängd. Varje varv committar `state/` och `logs/`.
+Därefter körs det varannan timme. Din dator kan vara avstängd. Varje varv committar `state/` och `logs/`.
 
 GitHub pausar schemalagda workflows i repon utan aktivitet i 60 dagar – bot-committarna räknas som aktivitet, så det löser sig självt.
 
