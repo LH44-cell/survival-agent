@@ -30,10 +30,12 @@ jobs:
           for a in opus fable; do
             python agent.py --agent "$a" || echo "agent $a failed"
           done
-      - name: Commit state and logs
+      - name: Build status page
+        run: python build_status.py
+      - name: Commit state, logs and status page
         run: |
           git config user.name "survival-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add -A state logs 2>/dev/null || true
+          git add -A state logs docs 2>/dev/null || true
           git diff --cached --quiet || git commit -m "cycle $(date -u +%Y-%m-%dT%H:%M)"
           git push
