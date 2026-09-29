@@ -13,6 +13,7 @@ MIN_TRADE_USD = 1.0           # Krakens minsta ordervärde är ca 1 USD
 MAX_TRADES_PER_RUN = 1
 TAKER_FEE = 0.004             # Kraken Pro takeravgift 0,40 %
 PAPER_SLIPPAGE = 0.0005       # 0,05 % extra slippage i simuleringen
+LIQUIDATION_MARGIN_USD = 0.10 # tvångsförsäljning täcker underskottet + denna marginal (minst MIN_TRADE_USD)
 
 # Fast "serverkostnad" per körning som dras utöver tokenkostnaden (USD). 0 = av.
 FIXED_COST_PER_RUN = 0.0

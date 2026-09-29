@@ -24,8 +24,8 @@ rådata i `backtest/results/*.csv`.
    urval.
 5. **Compute-kostnaden dominerar.** Med dagens kostnad per varv lever Opus 188 dagar och Fable 57 dagar
    på ren kassa. Ingen strategi förlänger det nämnvärt. Den långsamma trendregeln ger i median 5 dagar
-   *kortare* liv än ren kassa för Opus (med den likvidering som föreslås nedan) och 16 dagar kortare
-   med dagens `liquidate_if_needed`. Playbookens värde är att den hindrar agenten från att överhandla,
+   *kortare* liv än ren kassa för Opus med den rättade `liquidate_if_needed` (16 dagar kortare med
+   den gamla, som sålde hela innehav). Playbookens värde är att den hindrar agenten från att överhandla,
    vilket i backtesten kostade 25–40 dagar jämfört med ren kassa.
 
 ## Upplägg
@@ -176,8 +176,8 @@ Compute-kostnaden dras från kassan varje varv. Om kassan blir negativ säljs in
 | | Opus | Fable |
 |---|---|---|
 | Ren kassa (ingen handel) | 188 dagar | 57 dagar |
-| Playbook bas, dagens likvidering (säljer hela innehav), median över 31/41 startdatum | 172 dagar | 54 dagar |
-| Playbook bas, likvidering som bara säljer underskottet | 183 dagar (157–240) | 56 dagar (50–66) |
+| Playbook bas, gammal likvidering (säljer hela innehav), median över 31/41 startdatum | 172 dagar | 54 dagar |
+| Playbook bas, rättad likvidering (säljer bara underskottet) | 183 dagar (157–240) | 56 dagar (50–66) |
 | Snabba strategier (SMA 8d, donchian 2d/1d, korsning 1d/5d), median över par | 147–162 dagar | 53–57 dagar |
 | Extra prompt-kostnad för playbook + SMA-rader (≈ 200 tokens, uppskattat) | −15 dagar | −4 dagar |
 
@@ -191,10 +191,13 @@ kan betala för tänkandet.** Det som faktiskt påverkar livslängden:
 - **Compute-kostnaden per varv**: modell, promptlängd och antal varv per dygn. Varje extra 100 tokens
   i systemprompten kostar Opus cirka 8 dagars liv.
 - **Att inte överhandla.** Det är den största risk agenten själv styr över.
-- **`liquidate_if_needed` i `agent.py`** säljer i dag *hela* första innehavet när kassan går minus med
-  några cent. En investerad agent hamnar då i en avgiftsspiral: sälj allt, köp tillbaka, upprepa.
-  Fable gjorde 396 trades i stället för 20. Att bara sälja underskottet (minst 1 USD) ger Opus i
-  median 11 dagar längre liv. **Rekommenderad uppföljning**, men den ingår inte i den här ändringen.
+- **`liquidate_if_needed` i `agent.py`** sålde tidigare *hela* första innehavet när kassan gick minus
+  med några cent. En investerad agent hamnade då i en avgiftsspiral: sälj allt, köp tillbaka, upprepa.
+  Fable gjorde 396 trades i stället för 20. **Rättat i samma PR:** funktionen säljer nu bara
+  underskottet plus `LIQUIDATION_MARGIN_USD` (0,10 USD), minst 1 USD, från största innehavet. Det ger
+  Opus i median 11 dagar längre liv. Backtesten (`engine.run(partial_liquidation=True)`) modellerar
+  underskottet med minst 1 USD utan marginalen. Skillnaden är försumbar, eftersom minsta ordern på
+  1 USD redan täcker många varv.
 
 ## Rekommendation
 
