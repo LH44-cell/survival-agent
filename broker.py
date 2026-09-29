@@ -13,12 +13,16 @@ def market_client():
 
 
 def fetch_market(client):
-    """Hämtar ticker + senaste OHLCV-staplar för alla par."""
+    """Hämtar ticker + senaste OHLCV-staplar + långsamt trendmått för alla par."""
     market = {}
     for pair in config.PAIRS:
         t = client.fetch_ticker(pair)
         bars = client.fetch_ohlcv(pair, config.OHLCV_TIMEFRAME, limit=config.OHLCV_BARS)
         closes = [b[4] for b in bars]
+        # SMA över de senaste TREND_SMA_DAYS avslutade dygnen (dagens pågående dygn exkluderas)
+        daily = client.fetch_ohlcv(pair, "1d", limit=config.TREND_SMA_DAYS + 1)[:-1]
+        daily_closes = [b[4] for b in daily[-config.TREND_SMA_DAYS:]]
+        sma = sum(daily_closes) / len(daily_closes) if len(daily_closes) == config.TREND_SMA_DAYS else None
         market[pair] = {
             "bid": t["bid"],
             "ask": t["ask"],
@@ -27,6 +31,7 @@ def fetch_market(client):
             "high_24h": t.get("high"),
             "low_24h": t.get("low"),
             "closes": closes,
+            "sma_trend": sma,
         }
     return market
 

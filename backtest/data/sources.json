@@ -1,0 +1,58 @@
+{
+  "BTC/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  },
+  "ETH/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  },
+  "SOL/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  },
+  "DOGE/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  },
+  "AVAX/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  },
+  "LINK/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  },
+  "XRP/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  },
+  "SUI/USD": {
+    "source": "bitstamp",
+    "bars": 17520,
+    "coverage": 1.0,
+    "first": "2024-09-29T09:00:00.000Z",
+    "last": "2026-09-29T08:00:00.000Z"
+  }
+}

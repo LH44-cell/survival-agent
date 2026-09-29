@@ -44,6 +44,24 @@ Your only goal is to survive as long as possible and, if you can, grow. Nobody w
 
 Use the `decide` tool exactly once. Be honest in your reasoning; it is logged."""
 
+STRATEGY_FILE = "strategy.md"
+
+
+def load_strategy():
+    """Strategiregler från backtesten (strategy.md) läggs sist i systemprompten.
+    Filen ingår i varje anrop och kostar alltså tokens varje varv – håll den kort."""
+    if not os.path.exists(STRATEGY_FILE):
+        return ""
+    with open(STRATEGY_FILE) as f:
+        return f.read().strip()
+
+
+def system_prompt():
+    strategy = load_strategy()
+    if not strategy:
+        return SYSTEM_PROMPT
+    return f"{SYSTEM_PROMPT}\n\n== TRADING PLAYBOOK ==\n{strategy}"
+
 
 # ---------- tillstånd ----------
 
@@ -123,6 +141,9 @@ def build_user_message(state, market):
             f"24h {m['change_24h_pct']:+.2f}%  48h {chg_48h:+.2f}%"
         )
         lines.append(f"   last 12 hourly closes: {recent}")
+        if m.get("sma_trend"):
+            dist = (m["last"] / m["sma_trend"] - 1) * 100
+            lines.append(f"   {config.TREND_SMA_DAYS}-day SMA: {m['sma_trend']:.2f}  (price {dist:+.1f}% vs SMA)")
 
     if state["trades"]:
         lines += ["", "== YOUR LAST TRADES =="]
@@ -145,7 +166,7 @@ def ask_model(agent_cfg, user_msg):
     resp = client.messages.create(
         model=agent_cfg["model"],
         max_tokens=16000,  # tänkandet är alltid på och räknas mot max_tokens
-        system=SYSTEM_PROMPT,
+        system=system_prompt(),
         tools=[DECIDE_TOOL],
         tool_choice={"type": "auto"},  # "tool"/"any" ger 400 på Opus 5.5 och Fable 5.1
         messages=[{"role": "user", "content": user_msg}],

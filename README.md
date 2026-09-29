@@ -14,6 +14,9 @@ plånboken. Når eget kapital noll stängs de av för gott. Modellerna vet inte 
 | `status.py` | Snabb översikt över alla agenter |
 | `build_status.py` | Bygger statussidan `docs/index.html` (graf, tabell, senaste besluten) från `state/` och `logs/` |
 | `tax_export.py` | K4-underlag (genomsnittsmetoden, SEK via ECB) från riktiga trades |
+| `strategy.md` | Handelsregler från backtesten – läggs sist i agenternas systemprompt. Kostar tokens varje varv, håll den kort |
+| `BACKTEST.md` | Backtest av par och strategier (2 år timdata): resultat per nivå och rekommendation |
+| `backtest/` | Skripten bakom `BACKTEST.md` (data, Kraken-spread, simulator, strategier, rapport) |
 | `.github/workflows/agent.yml` | Kör allt varannan timme på GitHub Actions |
 | `state/` | Agenternas tillstånd (plånbok, trades, historik) – committas automatiskt |
 | `logs/` | En rad per varv med beslut, resonemang, kostnad, marknadsögonblick |

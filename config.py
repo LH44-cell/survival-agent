@@ -35,3 +35,4 @@ AGENTS = {
 RUNS_PER_DAY = 12             # används bara för att beräkna "förväntad livslängd"
 OHLCV_TIMEFRAME = "1h"
 OHLCV_BARS = 48
+TREND_SMA_DAYS = 50           # långsamt trendmått i prompten, se strategy.md och BACKTEST.md
