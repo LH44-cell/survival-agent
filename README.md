@@ -12,10 +12,12 @@ plånboken. Når eget kapital noll stängs de av för gott. Modellerna vet inte 
 | `broker.py` | Prisdata + PaperBroker (simulering) / KrakenBroker (riktiga ordrar) |
 | `risk.py` | Hårda regler i kod. `KILL_SWITCH`-fil i mappen stoppar all handel |
 | `status.py` | Snabb översikt över alla agenter |
+| `build_status.py` | Bygger statussidan `docs/index.html` (graf, tabell, senaste besluten) från `state/` och `logs/` |
 | `tax_export.py` | K4-underlag (genomsnittsmetoden, SEK via ECB) från riktiga trades |
 | `.github/workflows/agent.yml` | Kör allt varannan timme på GitHub Actions |
 | `state/` | Agenternas tillstånd (plånbok, trades, historik) – committas automatiskt |
 | `logs/` | En rad per varv med beslut, resonemang, kostnad, marknadsögonblick |
+| `docs/` | Statussidan, en fristående HTML-fil som byggs om varje varv och publiceras via GitHub Pages |
 
 ## Steg 1 – lokalt, papperläge (5 min)
 ```bash
@@ -25,6 +27,7 @@ export $(cat .env | xargs)      # eller sätt variabeln på annat sätt
 python agent.py --agent opus
 python agent.py --agent fable
 python status.py
+python build_status.py         # öppna sedan docs/index.html i webbläsaren
 ```
 Kolla `logs/opus.jsonl` och läs resonemangen. Kör några varv för hand innan du automatiserar.
 
@@ -37,7 +40,11 @@ Kolla `logs/opus.jsonl` och läs resonemangen. Kör några varv för hand innan 
    (Kraken-nycklarna behövs först i steg 3).
 3. Settings → Actions → General → Workflow permissions → *Read and write permissions*.
 4. Actions-fliken → `survival-agents` → *Run workflow* för att testa manuellt.
-Därefter körs det varannan timme. Din dator kan vara avstängd. Varje varv committar `state/` och `logs/`.
+Därefter körs det varannan timme. Din dator kan vara avstängd. Varje varv committar `state/`, `logs/` och `docs/`.
+
+**Statussida:** Settings → Pages → Source: *Deploy from a branch* → Branch: `main`, mapp `/docs` → Save.
+Sidan hamnar på `https://<användare>.github.io/<repo>/` och uppdateras efter varje varv.
+OBS: sidan är publik även om repot är privat, och Pages för privata repon kräver GitHub Pro/Team.
 
 GitHub pausar schemalagda workflows i repon utan aktivitet i 60 dagar – bot-committarna räknas som aktivitet, så det löser sig självt.
 
