@@ -20,15 +20,15 @@ FIXED_COST_PER_RUN = 0.0
 # Agenter som körs. Priser i USD per miljon tokens (input, output).
 # OBS: verifiera priserna mot https://www.anthropic.com/pricing innan start.
 AGENTS = {
-    "haiku": {
-        "model": "claude-haiku-4-5-20251001",
-        "price_in": 1.00,
-        "price_out": 5.00,
+    "opus": {
+        "model": "claude-opus-5-5",
+        "price_in": 4.00,
+        "price_out": 20.00,
     },
     "fable": {
         "model": "claude-fable-5-1",
-        "price_in": 15.00,   # PLACEHOLDER – uppdatera
-        "price_out": 75.00,  # PLACEHOLDER – uppdatera
+        "price_in": 10.00,
+        "price_out": 50.00,
     },
 }
 

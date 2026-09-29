@@ -1,5 +1,5 @@
 """Ett varv i agentens liv. Körs t.ex. varje timme:
-    python agent.py --agent haiku
+    python agent.py --agent opus
 Läser tillstånd -> hämtar marknad -> frågar modellen -> riskfilter -> exekverar
 -> drar compute-kostnad från kassan -> sparar tillstånd + logg."""
 
@@ -139,7 +139,7 @@ def build_user_message(state, market):
 # ---------- modellanrop ----------
 
 def ask_model(agent_cfg, user_msg):
-    client = anthropic.Anthropic()  # ANTHROPIC_API_KEY från miljön
+    client = anthropic.Anthropic(api_key=os.environ["SURVIVAL_API_KEY"])
     resp = client.messages.create(
         model=agent_cfg["model"],
         max_tokens=800,
