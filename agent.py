@@ -44,6 +44,24 @@ Your only goal is to survive as long as possible and, if you can, grow. Nobody w
 
 Use the `decide` tool exactly once. Be honest in your reasoning; it is logged."""
 
+STRATEGY_FILE = "strategy.md"
+
+
+def load_strategy():
+    """Strategiregler från backtesten (strategy.md) läggs sist i systemprompten.
+    Filen ingår i varje anrop och kostar alltså tokens varje varv – håll den kort."""
+    if not os.path.exists(STRATEGY_FILE):
+        return ""
+    with open(STRATEGY_FILE) as f:
+        return f.read().strip()
+
+
+def system_prompt():
+    strategy = load_strategy()
+    if not strategy:
+        return SYSTEM_PROMPT
+    return f"{SYSTEM_PROMPT}\n\n== TRADING PLAYBOOK ==\n{strategy}"
+
 
 # ---------- tillstånd ----------
 
@@ -123,6 +141,9 @@ def build_user_message(state, market):
             f"24h {m['change_24h_pct']:+.2f}%  48h {chg_48h:+.2f}%"
         )
         lines.append(f"   last 12 hourly closes: {recent}")
+        if m.get("sma_trend"):
+            dist = (m["last"] / m["sma_trend"] - 1) * 100
+            lines.append(f"   {config.TREND_SMA_DAYS}-day SMA: {m['sma_trend']:.2f}  (price {dist:+.1f}% vs SMA)")
 
     if state["trades"]:
         lines += ["", "== YOUR LAST TRADES =="]
@@ -145,7 +166,7 @@ def ask_model(agent_cfg, user_msg):
     resp = client.messages.create(
         model=agent_cfg["model"],
         max_tokens=16000,  # tänkandet är alltid på och räknas mot max_tokens
-        system=SYSTEM_PROMPT,
+        system=system_prompt(),
         tools=[DECIDE_TOOL],
         tool_choice={"type": "auto"},  # "tool"/"any" ger 400 på Opus 5.5 och Fable 5.1
         messages=[{"role": "user", "content": user_msg}],
@@ -180,15 +201,28 @@ def execute(decision, state, brk):
 
 
 def liquidate_if_needed(state, market, brk):
-    """Om kassan blir negativ av compute-kostnaden säljs innehav för att täcka."""
+    """Om kassan blir negativ av compute-kostnaden säljs bara så mycket som behövs för att
+    täcka underskottet plus en liten marginal – aldrig hela innehav i onödan (det gav en
+    avgiftsspiral: sälj allt, köp tillbaka, betala avgift igen). Största innehavet först.
+    Säljet blir minst MIN_TRADE_USD; en rest under MIN_TRADE_USD säljs med i samma order."""
     while state["cash"] < 0 and state["positions"]:
-        base, amt = next(iter(state["positions"].items()))
+        base, amt = max(state["positions"].items(),
+                        key=lambda kv: kv[1] * market[f"{kv[0]}/{config.QUOTE}"]["bid"])
         pair = f"{base}/{config.QUOTE}"
-        fill = brk.sell(pair, amt)
+        bid = market[pair]["bid"]
+        # netto per såld enhet efter slippage och avgift
+        net_px = bid * (1 - config.PAPER_SLIPPAGE) * (1 - config.TAKER_FEE)
+        need = max(-state["cash"] + config.LIQUIDATION_MARGIN_USD, config.MIN_TRADE_USD)
+        sell_amt = min(amt, need / net_px)
+        if (amt - sell_amt) * bid < config.MIN_TRADE_USD:
+            sell_amt = amt
+        fill = brk.sell(pair, sell_amt)
         fill["time"] = now_iso()
         fill["forced"] = True
         state["cash"] += fill["quote"]
-        del state["positions"][base]
+        state["positions"][base] -= sell_amt
+        if state["positions"][base] < 1e-9 or sell_amt == amt:
+            del state["positions"][base]
         state["trades"].append(fill)
 
 
