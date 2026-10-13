@@ -1,0 +1,94 @@
+{
+  "checked_at": "2026-09-29T11:11:21+00:00",
+  "venues": {
+    "kraken": {
+      "reachable": true,
+      "pairs": {
+        "BTC/USD": {
+          "listed": true,
+          "symbol": "BTC/USD",
+          "min_cost": 0.5,
+          "min_amount": 5e-05,
+          "min_amount_usd": 4.199945,
+          "volume_24h_usd": 201720278.2677675,
+          "spread_bps": 0.011904910716838815,
+          "depth_usd_0.5pct": 7780848.170599999
+        },
+        "ETH/USD": {
+          "listed": true,
+          "symbol": "ETH/USD",
+          "min_cost": 0.5,
+          "min_amount": 0.001,
+          "min_amount_usd": 2.7180500000000003,
+          "volume_24h_usd": 99100191.03418042,
+          "spread_bps": 0.03679751248728566,
+          "depth_usd_0.5pct": 3324557.421879999
+        },
+        "SOL/USD": {
+          "listed": true,
+          "symbol": "SOL/USD",
+          "min_cost": 0.5,
+          "min_amount": 0.06,
+          "min_amount_usd": 7.1574,
+          "volume_24h_usd": 37670226.70057194,
+          "spread_bps": 0.8383283732242207,
+          "depth_usd_0.5pct": 3994588.4210699997
+        },
+        "DOGE/USD": {
+          "listed": true,
+          "symbol": "DOGE/USD",
+          "min_cost": 0.5,
+          "min_amount": 50.0,
+          "min_amount_usd": 4.745744999999999,
+          "volume_24h_usd": 5741344.699480357,
+          "spread_bps": 1.0947760235622903,
+          "depth_usd_0.5pct": 597503.7306690982
+        },
+        "AVAX/USD": {
+          "listed": true,
+          "symbol": "AVAX/USD",
+          "min_cost": 0.5,
+          "min_amount": 0.5,
+          "min_amount_usd": 5.775,
+          "volume_24h_usd": 12844548.929200184,
+          "spread_bps": 0.8658383479814902,
+          "depth_usd_0.5pct": 352241.18088199996
+        },
+        "LINK/USD": {
+          "listed": true,
+          "symbol": "LINK/USD",
+          "min_cost": 0.5,
+          "min_amount": 0.55,
+          "min_amount_usd": 8.4297235,
+          "volume_24h_usd": 31677292.07886022,
+          "spread_bps": 2.001973933255519,
+          "depth_usd_0.5pct": 496031.89337243995
+        },
+        "XRP/USD": {
+          "listed": true,
+          "symbol": "XRP/USD",
+          "min_cost": 0.5,
+          "min_amount": 1.65,
+          "min_amount_usd": 2.48589,
+          "volume_24h_usd": 67669821.87362018,
+          "spread_bps": 0.9291583153034298,
+          "depth_usd_0.5pct": 1013001.71285301
+        },
+        "SUI/USD": {
+          "listed": true,
+          "symbol": "SUI/USD",
+          "min_cost": 0.5,
+          "min_amount": 5.0,
+          "min_amount_usd": 5.824,
+          "volume_24h_usd": 22122373.23600282,
+          "spread_bps": 3.434065934065556,
+          "depth_usd_0.5pct": 351769.81672630005
+        }
+      }
+    },
+    "hyperliquid": {
+      "reachable": false,
+      "error": "NetworkError: hyperliquid POST https://api.hyperliquid.xyz/info"
+    }
+  }
+}

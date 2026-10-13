@@ -16,6 +16,7 @@ plånboken. Når eget kapital noll stängs de av för gott. Modellerna vet inte 
 | `tax_export.py` | K4-underlag (genomsnittsmetoden, SEK via ECB) från riktiga trades |
 | `strategy.md` | Handelsregler från backtesten – läggs sist i agenternas systemprompt. Kostar tokens varje varv, håll den kort |
 | `BACKTEST.md` | Backtest av par och strategier (2 år timdata): resultat per nivå och rekommendation |
+| `BACKTEST_FEES.md` | Samma backtest vid fem avgiftsnivåer (Kraken, MiCA-börs, Hyperliquid), minsta ordervärde och startkapital |
 | `backtest/` | Skripten bakom `BACKTEST.md` (data, Kraken-spread, simulator, strategier, rapport) |
 | `.github/workflows/agent.yml` | Kör allt varannan timme på GitHub Actions |
 | `state/` | Agenternas tillstånd (plånbok, trades, historik) – committas automatiskt |
